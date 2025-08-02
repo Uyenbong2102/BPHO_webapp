@@ -1,88 +1,126 @@
-// Tab switching
-const menuItems = document.querySelectorAll('.menu-item');
-const sections = document.querySelectorAll('.content');
+const tabs = {
+  intro: "<h1>Welcome to BPHO 2025</h1><p>This is the introduction.</p>",
+  challenges: generateChallengeContent(),
+  analytics: generateAnalyticsContent(),
+  settings: generateSettingsContent()
+};
 
-menuItems.forEach(item => {
-  item.addEventListener('click', () => {
-    menuItems.forEach(i => i.classList.remove('active'));
-    item.classList.add('active');
-    const target = item.dataset.target;
-    sections.forEach(sec => {
-      sec.classList.remove('active');
-      if (sec.id === target) sec.classList.add('active');
-    });
-  });
-});
-
-// Task detail
-function showTask(id) {
-  const detail = document.getElementById('taskDetail');
-  if (!id) return (detail.innerHTML = '');
-  detail.innerHTML = `<div class="card">You are viewing detail of <strong>Task ${id}</strong>.</div>`;
+function changeTab(tabName) {
+  const content = document.getElementById("content");
+  content.innerHTML = tabs[tabName] || "<p>Content not found.</p>";
+  if (tabName === 'analytics') drawChart();
+  if (tabName === 'challenges') setupChallenges();
 }
 
-// Sample data
-const data = [
-  { time: '2025-08-01 10:00', views: 12 },
-  { time: '2025-08-02 14:32', views: 20 },
-  { time: '2025-08-03 09:15', views: 17 },
-];
-
-// Fill table
-const tbody = document.getElementById('data-table');
-data.forEach(d => {
-  const row = document.createElement('tr');
-  row.innerHTML = `<td>${d.time}</td><td>${d.views}</td>`;
-  tbody.appendChild(row);
-});
-
-// Fill stats
-document.getElementById('totalVisits').innerText = data.reduce((sum, d) => sum + d.views, 0);
-document.getElementById('lastAccess').innerText = data[data.length - 1].time;
-
-// Export
-function exportToExcel() {
-  let csv = 'Time,Views\n';
-  data.forEach(d => {
-    csv += `${d.time},${d.views}\n`;
-  });
-  const blob = new Blob([csv], { type: 'text/csv' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'analytics.csv';
-  a.click();
+function generateChallengeContent() {
+  let options = '<option value="">-- Choose a Task --</option>';
+  for (let i = 1; i <= 10; i++) {
+    options += `<option value="task${i}">Task ${i}</option>`;
+  }
+  return `
+    <section>
+      <h2>Computational Challenges</h2>
+      <label for="taskSelect">Select a task:</label>
+      <select id="taskSelect" onchange="viewTaskDetail(this.value)">${options}</select>
+      <p id="taskDetail"></p>
+    </section>
+  `;
 }
 
-// Theme
-function setTheme() {
-  document.body.classList.toggle('light-theme', !document.getElementById('darkToggle').checked);
+function viewTaskDetail(taskId) {
+  document.getElementById("taskDetail").innerText = taskId ? \`You selected \${taskId}.\` : "";
 }
 
-// Font
-function setFont(size) {
-  const root = document.documentElement;
-  if (size === 'large') root.style.fontSize = '18px';
-  else if (size === 'xlarge') root.style.fontSize = '20px';
-  else root.style.fontSize = '16px';
+function generateAnalyticsContent() {
+  return \`
+    <section>
+      <h2>Access Statistics</h2>
+      <div class="summary-boxes">
+        <div>Total: <span id="totalVisits">0</span></div>
+        <div>Last: <span id="lastAccess">-</span></div>
+        <div>Peak: <span id="peakTime">-</span></div>
+        <div>Average: <span id="averageViews">0</span></div>
+      </div>
+      <div>
+        <label>Filter by date range (not functional in demo)</label>
+        <input type="date"> to <input type="date">
+      </div>
+      <div class="chart-container">
+        <canvas id="visitChart"></canvas>
+      </div>
+      <table>
+        <thead><tr><th>Time</th><th>Views</th></tr></thead>
+        <tbody id="visitTable"></tbody>
+      </table>
+      <button class="btn" onclick="exportToExcel()">Export to Excel</button>
+    </section>
+  \`;
 }
 
-// Chart
-const ctx = document.getElementById('visitsChart');
-new Chart(ctx, {
-  type: 'bar',
-  data: {
-    labels: data.map(d => d.time),
+function generateSettingsContent() {
+  return \`
+    <section>
+      <h2>Settings</h2>
+      <label><input type="checkbox" id="darkMode" onchange="toggleDarkMode()"> Dark Mode</label>
+      <label for="fontSize">Font Size:
+        <select id="fontSize" onchange="changeFontSize(this.value)">
+          <option value="normal">Normal</option>
+          <option value="large">Large</option>
+        </select>
+      </label>
+      <label><input type="checkbox" id="autoRefresh" onchange="toggleAutoRefresh()"> Auto-refresh data</label>
+      <label for="interval">Refresh interval (seconds):
+        <input type="number" id="interval" value="30" min="5" />
+      </label>
+    </section>
+  \`;
+}
+
+function drawChart() {
+  const ctx = document.getElementById('visitChart').getContext('2d');
+  const data = {
+    labels: ['2025-08-01 10:00', '2025-08-02 14:32', '2025-08-03 09:15'],
     datasets: [{
-      label: 'Visits',
-      data: data.map(d => d.views),
+      label: 'Views',
+      data: [12, 20, 17],
       backgroundColor: '#00bfff'
     }]
-  },
-  options: {
-    responsive: true,
-    plugins: { legend: { display: false } },
-    scales: {
-      y: { beginAtZero: true }
-    }
-  }
-});
+  };
+  new Chart(ctx, {
+    type: 'bar',
+    data,
+    options: { responsive: true, scales: { y: { beginAtZero: true } } }
+  });
+
+  // Populate summary
+  document.getElementById("totalVisits").innerText = 49;
+  document.getElementById("lastAccess").innerText = "2025-08-03 09:15";
+  document.getElementById("peakTime").innerText = "2025-08-02 14:32 (20)";
+  document.getElementById("averageViews").innerText = "16.3";
+
+  const tbody = document.getElementById("visitTable");
+  tbody.innerHTML = data.labels.map((label, i) => \`<tr><td>\${label}</td><td>\${data.datasets[0].data[i]}</td></tr>\`).join("");
+}
+
+function exportToExcel() {
+  alert("Exporting to Excel... (Demo only)");
+}
+
+function toggleDarkMode() {
+  document.body.style.backgroundColor = document.getElementById('darkMode').checked ? '#121212' : '#ffffff';
+}
+
+function changeFontSize(size) {
+  document.body.style.fontSize = size === 'large' ? '18px' : '14px';
+}
+
+function toggleAutoRefresh() {
+  const isEnabled = document.getElementById('autoRefresh').checked;
+  alert("Auto-refresh " + (isEnabled ? "enabled" : "disabled") + " (Demo)");
+}
+
+function setupChallenges() {
+  document.getElementById('taskDetail').innerText = '';
+}
+
+changeTab('intro');

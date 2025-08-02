@@ -4,67 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>BPHO 2025</title>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body>
-  <div class="app">
-    <aside class="sidebar">
-      <h1>BPHO 2025</h1>
-      <ul class="menu">
-        <li class="menu-item active" data-target="intro">📘 Introduction</li>
-        <li class="menu-item" data-target="challenges">🧪 Challenges</li>
-        <li class="menu-item" data-target="analytics">📊 Analytics</li>
-        <li class="menu-item" data-target="settings">⚙️ Settings</li>
-      </ul>
+  <div id="app">
+    <aside>
+      <h2>BPHO 2025</h2>
+      <nav>
+        <button onclick="changeTab('intro')">📘 Introduction</button>
+        <button onclick="changeTab('challenges')">🧪 Challenges</button>
+        <button onclick="changeTab('analytics')">📊 Analytics</button>
+        <button onclick="changeTab('settings')">⚙️ Settings</button>
+      </nav>
     </aside>
-
-    <main class="main">
-      <section id="intro" class="content active">
-        <h2>📘 Introduction</h2>
-        <p>Welcome to the BPHO 2025 project. Details will be updated soon.</p>
-      </section>
-
-      <section id="challenges" class="content">
-        <h2>🧪 Computational Challenges</h2>
-        <label for="taskSelect">Select a task:</label>
-        <select id="taskSelect" onchange="showTask(this.value)">
-          <option value="">-- Choose a Task --</option>
-          ${[...Array(10)].map((_, i) => `<option value="${i + 1}">Task ${i + 1}</option>`).join('')}
-        </select>
-        <div id="taskDetail" class="card"></div>
-      </section>
-
-      <section id="analytics" class="content">
-        <h2>📊 Access Statistics</h2>
-        <div class="stats">
-          <div>Total visits: <strong id="totalVisits">0</strong></div>
-          <div>Last access: <strong id="lastAccess">-</strong></div>
-        </div>
-        <canvas id="visitsChart" height="200"></canvas>
-        <table>
-          <thead><tr><th>Time</th><th>Views</th></tr></thead>
-          <tbody id="data-table"></tbody>
-        </table>
-        <button onclick="exportToExcel()">💾 Export to Excel</button>
-      </section>
-
-      <section id="settings" class="content">
-        <h2>⚙️ Settings</h2>
-        <label><input type="checkbox" id="darkToggle" onchange="setTheme()"> Dark Mode</label><br/>
-        <label>Font Size:
-          <select onchange="setFont(this.value)">
-            <option value="normal">Normal</option>
-            <option value="large">Large</option>
-            <option value="xlarge">Extra Large</option>
-          </select>
-        </label><br/>
-        <label><input type="checkbox" id="autoRefresh" checked /> Auto-refresh data</label><br/>
-        <label>Refresh interval (seconds): <input type="number" id="refreshInterval" value="30" min="5"/></label>
-      </section>
-    </main>
+    <main id="content"></main>
   </div>
   <script src="script.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>
