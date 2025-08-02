@@ -9,14 +9,12 @@ function showPage(pageId) {
     activePage.classList.add("active");
   }
 
-  // Tab indicator
   document.querySelectorAll(".sidebar li").forEach(li => li.classList.remove("active-tab"));
   document.querySelectorAll(".sidebar li").forEach(li => {
     if (li.textContent.toLowerCase().includes(pageId)) li.classList.add("active-tab");
   });
 }
 
-// Tasks 1 to 10
 const taskSelect = document.getElementById("taskSelect");
 const taskDetail = document.getElementById("taskDetail");
 for (let i = 1; i <= 10; i++) {
@@ -30,7 +28,6 @@ taskSelect.addEventListener("change", () => {
   taskDetail.textContent = taskNumber ? `You are viewing detail of Task ${taskNumber}.` : "";
 });
 
-// Data
 const accessData = [
   { time: "2025-08-01 10:00", views: 12 },
   { time: "2025-08-02 14:32", views: 20 },
@@ -67,18 +64,33 @@ function renderAnalytics(data = accessData) {
     },
     options: {
       responsive: true,
-      plugins: { legend: { display: true } }
+      plugins: {
+        legend: {
+          display: true,
+          labels: {
+            color: "#fff"
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { color: "#fff" }
+        },
+        y: {
+          ticks: { color: "#fff" }
+        }
+      }
     }
   });
 }
 
-function filterData() {
-  const start = document.getElementById("startDate").value;
-  const end = document.getElementById("endDate").value;
+function applyDateFilter() {
+  const from = document.getElementById("fromDate").value;
+  const to = document.getElementById("toDate").value;
 
   let filtered = accessData;
-  if (start) filtered = filtered.filter(d => d.time >= start);
-  if (end) filtered = filtered.filter(d => d.time <= end + "T23:59");
+  if (from) filtered = filtered.filter(d => d.time >= from);
+  if (to) filtered = filtered.filter(d => d.time <= to + "T23:59");
 
   renderAnalytics(filtered);
 }
@@ -101,6 +113,5 @@ fontSizeSelect.addEventListener("change", () => {
   document.body.style.fontSize = fontSizeSelect.value === "large" ? "18px" : "16px";
 });
 
-// Init
 showPage("introduction");
 renderAnalytics();
