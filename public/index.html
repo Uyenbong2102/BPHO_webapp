@@ -5,65 +5,67 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>BPHO 2025</title>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
-  <div class="container fade-in">
-    <aside class="sidebar">
-      <h1>BPHO 2025</h1>
-      <nav>
-        <button onclick="showSection('introduction')">📘 Introduction</button>
-        <button onclick="showSection('challenges')">🧪 Challenges</button>
-        <button onclick="showSection('analytics')">📊 Analytics</button>
-        <button onclick="showSection('settings')">⚙️ Settings</button>
-      </nav>
-    </aside>
+  <div class="app-container">
+    <nav class="sidebar">
+      <h2>BPHO 2025</h2>
+      <ul>
+        <li onclick="showPage('introduction')">📘 Introduction</li>
+        <li onclick="showPage('challenges')">🧪 Challenges</li>
+        <li onclick="showPage('analytics')">📊 Analytics</li>
+        <li onclick="showPage('settings')">⚙️ Settings</li>
+      </ul>
+    </nav>
 
-    <main class="content">
-      <section id="introduction" class="page active">
-        <h2>Welcome to BPHO 2025</h2>
+    <main class="main-content">
+      <section id="introduction" class="page">
+        <h1>Welcome to BPHO 2025</h1>
         <p>This is the introduction page.</p>
       </section>
 
-      <section id="challenges" class="page">
-        <h2>Computational Challenges</h2>
+      <section id="challenges" class="page hidden">
+        <h1>Computational Challenges</h1>
         <label for="taskSelect">Select a task:</label>
-        <select id="taskSelect" onchange="displayTask()">
-          <option>-- Choose a Task --</option>
-          ${[...Array(10)].map((_, i) => `<option value="Task ${i + 1}">Task ${i + 1}</option>`).join('')}
+        <select id="taskSelect">
+          <option value="">-- Choose a Task --</option>
         </select>
-        <div id="taskDetail"></div>
+        <p id="taskDetail"></p>
       </section>
 
-      <section id="analytics" class="page">
-        <h2>Access Statistics</h2>
-        <p><strong>Total visits:</strong> <span id="totalVisits">0</span></p>
-        <p><strong>Last access:</strong> <span id="lastAccess">-</span></p>
-        <table>
+      <section id="analytics" class="page hidden">
+        <h1>Access Statistics</h1>
+        <p><strong>Total visits:</strong> 74</p>
+        <p><strong>Last access:</strong> 2025-08-04 11:45</p>
+
+        <canvas id="analyticsChart" width="600" height="300"></canvas>
+
+        <table id="analyticsTable">
           <thead>
             <tr><th>Time</th><th>Views</th></tr>
           </thead>
-          <tbody id="visitTimeline"></tbody>
+          <tbody id="analytics-body"></tbody>
         </table>
-        <button onclick="exportToExcel()">💾 Export to Excel</button>
+
+        <button id="exportExcel">💾 Export to Excel</button>
       </section>
 
-      <section id="settings" class="page">
-        <h2>Settings</h2>
-        <label><input type="checkbox" id="darkModeToggle" onchange="toggleDarkMode()"> Dark Mode</label>
-        <br />
+      <section id="settings" class="page hidden">
+        <h1>Settings</h1>
+        <label><input type="checkbox" id="darkModeToggle" /> Dark Mode</label><br/>
         <label>Font Size:
-          <select id="fontSizeSelect" onchange="changeFontSize()">
+          <select id="fontSizeSelect">
             <option value="normal">Normal</option>
             <option value="large">Large</option>
-            <option value="x-large">Extra Large</option>
           </select>
-        </label>
-        <br />
-        <label><input type="checkbox" id="autoRefreshToggle" onchange="toggleAutoRefresh()"> Auto-refresh data</label>
-        <br />
-        <label>Refresh interval (seconds): 
-          <input type="number" id="refreshInterval" value="30" min="5" />
+        </label><br/>
+        <label><input type="checkbox" id="autoRefreshToggle" /> Auto-refresh data</label><br/>
+        <label>Refresh interval (seconds):
+          <input type="number" id="refreshInterval" value="30" />
         </label>
       </section>
     </main>

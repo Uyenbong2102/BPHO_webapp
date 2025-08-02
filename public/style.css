@@ -1,101 +1,101 @@
 body {
+  font-family: 'Inter', sans-serif;
   margin: 0;
-  font-family: 'Roboto', sans-serif;
-  background-color: #111;
-  color: white;
-  transition: background 0.3s, color 0.3s;
+  background-color: #121212;
+  color: #ffffff;
+  transition: background 0.3s ease;
 }
 
-.container {
+.app-container {
   display: flex;
   height: 100vh;
 }
 
 .sidebar {
-  width: 230px;
-  background-color: #181831;
+  width: 220px;
+  background-color: #14142a;
   padding: 20px;
-  display: flex;
-  flex-direction: column;
+  box-shadow: 2px 0 5px rgba(0,0,0,0.1);
 }
 
-.sidebar h1 {
+.sidebar h2 {
   font-size: 22px;
   margin-bottom: 20px;
-}
-
-.sidebar nav button {
-  background: none;
-  border: none;
-  color: #d5d5f7;
-  font-size: 16px;
-  padding: 10px 0;
-  text-align: left;
-  cursor: pointer;
-  transition: all 0.3s;
-}
-
-.sidebar nav button:hover {
   color: #fff;
-  transform: scale(1.03);
 }
 
-.content {
-  flex: 1;
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar li {
+  margin: 12px 0;
+  cursor: pointer;
+  color: #9ac8ff;
+  transition: color 0.2s ease;
+}
+
+.sidebar li:hover {
+  color: #ffffff;
+}
+
+.main-content {
+  flex-grow: 1;
   padding: 40px;
   overflow-y: auto;
-  animation: fadeIn 0.5s ease-in-out;
 }
 
 .page {
   display: none;
-  animation: slideUp 0.6s ease;
+  animation: fadeIn 0.5s ease-in-out;
 }
 
 .page.active {
   display: block;
 }
 
-select, input, button {
-  margin-top: 10px;
-  padding: 8px;
-  font-size: 14px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  transition: all 0.3s;
-}
-
-button:hover, select:hover {
-  background-color: #333;
-  transform: scale(1.02);
-  color: #fff;
+.hidden {
+  display: none;
 }
 
 table {
   width: 100%;
-  margin-top: 20px;
   border-collapse: collapse;
+  margin-top: 20px;
+  background: #1e1e1e;
 }
 
-table, th, td {
-  border: 1px solid #444;
-  padding: 8px;
+th, td {
+  padding: 10px;
+  border: 1px solid #333;
+  text-align: center;
 }
 
-th {
-  background-color: #222;
+button {
+  margin-top: 10px;
+  padding: 8px 12px;
+  background-color: #5e60ce;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-.fade-in {
-  animation: fadeIn 0.5s ease;
+button:hover {
+  background-color: #3b3fc1;
 }
 
 @keyframes fadeIn {
-  from { opacity: 0 }
-  to { opacity: 1 }
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
-@keyframes slideUp {
-  from { opacity: 0; transform: translateY(10px) }
-  to { opacity: 1; transform: translateY(0) }
+select, input[type="number"] {
+  margin-top: 8px;
+  padding: 6px;
+  border-radius: 4px;
+  border: 1px solid #888;
+  background-color: #1a1a1a;
+  color: white;
 }
