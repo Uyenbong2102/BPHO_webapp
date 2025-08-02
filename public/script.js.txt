@@ -1,86 +1,64 @@
-// Switch between sections
-const menuItems = document.querySelectorAll('.menu-item');
-const sections = document.querySelectorAll('.section');
-
-menuItems.forEach(item => {
-  item.addEventListener('click', () => {
-    menuItems.forEach(i => i.classList.remove('active'));
-    item.classList.add('active');
-
-    const target = item.getAttribute('data-target');
-    sections.forEach(sec => {
-      sec.classList.remove('active');
-      if (sec.id === target) sec.classList.add('active');
+<script>
+    // Giao diện điều hướng
+    const menuItems = document.querySelectorAll('.menu-item');
+    const sections = document.querySelectorAll('.content');
+    menuItems.forEach(item => {
+      item.addEventListener('click', () => {
+        menuItems.forEach(i => i.classList.remove('active'));
+        item.classList.add('active');
+        const target = item.dataset.target;
+        sections.forEach(sec => {
+          sec.classList.remove('active');
+          if (sec.id === target) sec.classList.add('active');
+        });
+      });
     });
-  });
-});
 
-// Render task content
-function renderTaskContent() {
-  const select = document.getElementById('taskSelect');
-  const container = document.getElementById('taskContent');
-  const task = select.value;
-
-  if (!task) {
-    container.innerHTML = "";
-    return;
-  }
-
-  container.innerHTML = `<p>Bạn đang xem nội dung của <strong>${task}</strong>. Nội dung chi tiết sẽ được cập nhật sau.</p>`;
-}
-
-// Data table
-const data = [
-  { time: "2025-08-01 08:00", views: 10 },
-  { time: "2025-08-02 12:00", views: 18 },
-  { time: "2025-08-03 16:00", views: 25 }
-];
-
-function renderDataTable() {
-  const tbody = document.querySelector("#data-table tbody");
-  tbody.innerHTML = "";
-
-  data.forEach(row => {
-    const tr = document.createElement("tr");
-    tr.innerHTML = `<td>${row.time}</td><td>${row.views}</td>`;
-    tbody.appendChild(tr);
-  });
-}
-
-// Export to CSV
-function exportToExcel() {
-  const table = document.getElementById("data-table");
-  let csv = "";
-  for (let row of table.rows) {
-    let rowData = [];
-    for (let cell of row.cells) {
-      rowData.push(cell.innerText);
+    // Hiển thị chi tiết Task
+    function showTask(id) {
+      const detail = document.getElementById('taskDetail');
+      detail.innerHTML = `<div class='card'>Bạn đang xem chi tiết của <strong>Task ${id}</strong>. Nội dung sẽ cập nhật sau.</div>`;
     }
-    csv += rowData.join(",") + "\n";
-  }
 
-  const blob = new Blob([csv], { type: "text/csv" });
-  const url = window.URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "data-hosting.csv";
-  a.click();
-}
+    // Xuất bảng thành CSV
+    function exportToExcel() {
+      const rows = document.querySelectorAll('table tr');
+      let csv = '';
+      rows.forEach(row => {
+        const cols = row.querySelectorAll('td, th');
+        let line = Array.from(cols).map(cell => cell.innerText).join(',');
+        csv += line + '\n';
+      });
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'data.csv';
+      a.click();
+    }
 
-// Theme & Font
-function changeTheme(value) {
-  document.body.classList.remove("light", "dark");
-  document.body.classList.add(value);
-}
+    // Dữ liệu giả lập cho bảng
+    const data = [
+      { time: '2025-08-01 10:00', views: 12 },
+      { time: '2025-08-02 14:32', views: 20 },
+      { time: '2025-08-03 09:15', views: 17 }
+    ];
+    const tbody = document.getElementById('data-table');
+    data.forEach(d => {
+      const row = document.createElement('tr');
+      row.innerHTML = `<td>${d.time}</td><td>${d.views}</td>`;
+      tbody.appendChild(row);
+    });
 
-function changeFontSize(value) {
-  document.body.classList.remove("small", "large");
-  if (value !== "normal") {
-    document.body.classList.add(value);
-  }
-}
+    // Đổi giao diện và font
+    function setTheme(theme) {
+      document.body.classList.remove('dark-theme', 'light-theme');
+      document.body.classList.add(theme + '-theme');
+    }
 
-// Init
-document.addEventListener("DOMContentLoaded", () => {
-  renderDataTable();
-});
+    function setFont(size) {
+      document.body.classList.remove('small', 'normal', 'large');
+      document.body.classList.add(size);
+    }
+  </script>
+</body>
+</html>

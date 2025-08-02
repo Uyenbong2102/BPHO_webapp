@@ -1,129 +1,82 @@
-:root {
-  --bg-dark: #121212;
-  --bg-light: #f4f4f4;
-  --text-dark: #f0f0f0;
-  --text-light: #222;
-  --primary: #1976d2;
-}
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>BPHO Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+  <div class="dashboard">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">📊 BPHO</div>
+      <ul class="menu">
+        <li class="menu-item active" data-target="intro">📘 Introduction</li>
+        <li class="menu-item" data-target="challenge">🧩 Computational Challenge</li>
+        <li class="menu-item" data-target="data">📈 Data Hosting</li>
+        <li class="menu-item" data-target="settings">⚙️ Settings</li>
+      </ul>
+    </aside>
 
-body {
-  font-family: 'Inter', sans-serif;
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  overflow: hidden;
-}
+    <!-- Main Content -->
+    <main class="main">
+      <!-- Introduction -->
+      <section id="intro" class="content active">
+        <h1>📘 Introduction</h1>
+        <div class="card-grid">
+          <div class="card">Bạn có thể thêm nội dung giới thiệu tại đây.</div>
+        </div>
+      </section>
 
-body.dark {
-  background-color: var(--bg-dark);
-  color: var(--text-dark);
-}
+      <!-- Challenge -->
+      <section id="challenge" class="content">
+        <h1>🧩 Computational Challenge</h1>
+        <div class="card-grid">
+          <!-- 10 Tasks -->
+          <div class="card" onclick="showTask(1)">Task 1</div>
+          <div class="card" onclick="showTask(2)">Task 2</div>
+          <div class="card" onclick="showTask(3)">Task 3</div>
+          <div class="card" onclick="showTask(4)">Task 4</div>
+          <div class="card" onclick="showTask(5)">Task 5</div>
+          <div class="card" onclick="showTask(6)">Task 6</div>
+          <div class="card" onclick="showTask(7)">Task 7</div>
+          <div class="card" onclick="showTask(8)">Task 8</div>
+          <div class="card" onclick="showTask(9)">Task 9</div>
+          <div class="card" onclick="showTask(10)">Task 10</div>
+        </div>
+        <div id="taskDetail" class="task-detail"></div>
+      </section>
 
-body.light {
-  background-color: var(--bg-light);
-  color: var(--text-light);
-}
+      <!-- Data Hosting -->
+      <section id="data" class="content">
+        <h1>📈 Data Hosting</h1>
+        <div class="stats">
+          <div class="stat">👥 Tổng lượt truy cập: <strong>75</strong></div>
+          <div class="stat">🕒 Lần cuối: <strong>2025-08-02 14:32</strong></div>
+        </div>
+        <table>
+          <thead><tr><th>Thời gian</th><th>Lượt truy cập</th></tr></thead>
+          <tbody id="data-table"></tbody>
+        </table>
+        <button onclick="exportToExcel()">📥 Xuất Excel</button>
+      </section>
 
-body.small {
-  font-size: 14px;
-}
-body.large {
-  font-size: 18px;
-}
-
-.app {
-  display: flex;
-  height: 100vh;
-}
-
-.sidebar {
-  width: 220px;
-  background-color: var(--primary);
-  color: white;
-  padding: 1.5rem 1rem;
-  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-}
-
-.sidebar h2 {
-  font-size: 1.5rem;
-  text-align: center;
-  margin-bottom: 2rem;
-}
-
-.sidebar ul {
-  list-style: none;
-  padding: 0;
-}
-
-.menu-item {
-  padding: 10px;
-  margin-bottom: 8px;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.2s;
-}
-
-.menu-item:hover {
-  background-color: rgba(255, 255, 255, 0.2);
-}
-
-.menu-item.active {
-  background-color: white;
-  color: var(--primary);
-  font-weight: bold;
-}
-
-.main {
-  flex: 1;
-  padding: 2rem;
-  overflow-y: auto;
-}
-
-.section {
-  display: none;
-}
-
-.section.active {
-  display: block;
-}
-
-select {
-  margin-top: 1rem;
-  padding: 5px;
-  font-size: 1rem;
-  border-radius: 5px;
-}
-
-.card {
-  background-color: rgba(255, 255, 255, 0.05);
-  padding: 1rem;
-  border-radius: 8px;
-  margin-top: 1rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 1rem;
-}
-
-th, td {
-  border: 1px solid #ccc;
-  padding: 10px;
-  text-align: center;
-}
-
-button {
-  margin-top: 1rem;
-  padding: 10px 16px;
-  background-color: var(--primary);
-  color: white;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-}
-
-button:hover {
-  background-color: #135ca1;
-}
+      <!-- Settings -->
+      <section id="settings" class="content">
+        <h1>⚙️ Settings</h1>
+        <div class="setting-group">
+          <label>🎨 Giao diện:</label>
+          <button onclick="setTheme('dark')">🌑 Tối</button>
+          <button onclick="setTheme('light')">🌕 Sáng</button>
+        </div>
+        <div class="setting-group">
+          <label>🔤 Cỡ chữ:</label>
+          <button onclick="setFont('small')">Nhỏ</button>
+          <button onclick="setFont('normal')">Bình thường</button>
+          <button onclick="setFont('large')">Lớn</button>
+        </div>
+      </section>
+    </main>
+  </div>
