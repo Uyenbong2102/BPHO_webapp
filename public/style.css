@@ -1,28 +1,31 @@
 body {
   margin: 0;
-  font-family: 'Segoe UI', sans-serif;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
 }
 .container {
   display: flex;
   height: 100vh;
 }
 .sidebar {
-  width: 220px;
+  width: 230px;
   background: #1e1e2f;
   color: white;
   padding: 20px;
 }
 .sidebar h2 {
   text-align: center;
+  font-size: 22px;
+  margin-bottom: 25px;
 }
 .sidebar ul {
   list-style: none;
   padding: 0;
 }
 .sidebar li {
-  padding: 10px;
+  padding: 12px;
   cursor: pointer;
-  border-radius: 5px;
+  border-radius: 6px;
 }
 .sidebar li.active,
 .sidebar li:hover {
@@ -41,9 +44,10 @@ body {
 }
 .card {
   background: #444;
-  padding: 10px;
+  padding: 15px;
   border-radius: 5px;
   color: white;
+  margin-top: 15px;
 }
 .dark-theme {
   background: #121212;
@@ -54,7 +58,7 @@ body {
   color: black;
 }
 .small {
-  font-size: 12px;
+  font-size: 13px;
 }
 .normal {
   font-size: 16px;
@@ -63,16 +67,21 @@ body {
   font-size: 20px;
 }
 button {
-  margin-top: 10px;
-  padding: 6px 12px;
+  margin-top: 12px;
+  padding: 8px 14px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
 }
+select {
+  padding: 6px 10px;
+  margin-left: 10px;
+  border-radius: 5px;
+}
 table {
   border-collapse: collapse;
   width: 100%;
-  margin-top: 10px;
+  margin-top: 15px;
 }
 table, th, td {
   border: 1px solid gray;

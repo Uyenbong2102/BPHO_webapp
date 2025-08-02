@@ -3,66 +3,67 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>BPHO Dashboard</title>
+  <title>BPHO 2025</title>
   <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
 </head>
 <body class="dark-theme">
   <div class="container">
     <nav class="sidebar">
-      <h2>BPHO</h2>
+      <h2>BPHO 2025</h2>
       <ul>
         <li class="menu-item active" data-target="intro">📘 Introduction</li>
-        <li class="menu-item" data-target="challenge">🧬 Computational Challenge</li>
-        <li class="menu-item" data-target="data">📊 Data Hosting</li>
+        <li class="menu-item" data-target="challenge">🧪 Challenges</li>
+        <li class="menu-item" data-target="data">📊 Analytics</li>
         <li class="menu-item" data-target="settings">⚙️ Settings</li>
       </ul>
     </nav>
     <main class="main-content">
       <section id="intro" class="content active">
         <h1>📘 Introduction</h1>
-        <p>Bạn có thể thêm nội dung giới thiệu tại đây.</p>
+        <p>General information about the project will be updated here.</p>
       </section>
       <section id="challenge" class="content">
-        <h1>🧬 Computational Challenge</h1>
-        <div class="task-list">
-          <ul>
-            <li onclick="showTask(1)">Task 1</li>
-            <li onclick="showTask(2)">Task 2</li>
-            <li onclick="showTask(3)">Task 3</li>
-            <li onclick="showTask(4)">Task 4</li>
-            <li onclick="showTask(5)">Task 5</li>
-            <li onclick="showTask(6)">Task 6</li>
-            <li onclick="showTask(7)">Task 7</li>
-            <li onclick="showTask(8)">Task 8</li>
-            <li onclick="showTask(9)">Task 9</li>
-            <li onclick="showTask(10)">Task 10</li>
-          </ul>
-          <div id="taskDetail" class="card">Chọn một task để xem chi tiết.</div>
-        </div>
+        <h1>🧪 Computational Tasks</h1>
+        <label for="taskSelect">Select a task:</label>
+        <select id="taskSelect" onchange="showTask(this.value)">
+          <option disabled selected>-- Choose a Task --</option>
+          <option value="1">Task 1</option>
+          <option value="2">Task 2</option>
+          <option value="3">Task 3</option>
+          <option value="4">Task 4</option>
+          <option value="5">Task 5</option>
+          <option value="6">Task 6</option>
+          <option value="7">Task 7</option>
+          <option value="8">Task 8</option>
+          <option value="9">Task 9</option>
+          <option value="10">Task 10</option>
+        </select>
+        <div id="taskDetail" class="card">Please select a task to view details.</div>
       </section>
       <section id="data" class="content">
-        <h1>📊 Data Hosting</h1>
-        <p>👥 Tổng lượt truy cập: <strong>75</strong></p>
-        <p>🕒 Lần cuối: <strong>2025-08-02 14:32</strong></p>
-        <h3>⏱️ Thời gian Lượt truy cập</h3>
+        <h1>📊 Access Statistics</h1>
+        <p>👥 Total visits: <strong>75</strong></p>
+        <p>🕒 Last access: <strong>2025-08-02 14:32</strong></p>
+        <h3>📅 Visit Timeline</h3>
         <table>
-          <thead><tr><th>Thời gian</th><th>Lượt</th></tr></thead>
+          <thead><tr><th>Time</th><th>Views</th></tr></thead>
           <tbody id="data-table"></tbody>
         </table>
-        <button onclick="exportToExcel()">📤 Xuất Excel</button>
+        <button onclick="exportToExcel()">📤 Export to Excel</button>
       </section>
       <section id="settings" class="content">
         <h1>⚙️ Settings</h1>
-        <label>🌗 Giao diện:
-          <button onclick="setTheme('dark')">Tối</button>
-          <button onclick="setTheme('light')">Sáng</button>
+        <label>🌗 Theme:
+          <button onclick="setTheme('dark')">Dark</button>
+          <button onclick="setTheme('light')">Light</button>
         </label>
         <br />
-        <label>🔠 Cỡ chữ:
+        <label>🔠 Font size:
           <select onchange="setFont(this.value)">
-            <option value="normal">Bình thường</option>
-            <option value="small">Nhỏ</option>
-            <option value="large">Lớn</option>
+            <option value="normal">Normal</option>
+            <option value="small">Small</option>
+            <option value="large">Large</option>
           </select>
         </label>
       </section>
