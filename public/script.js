@@ -1,4 +1,3 @@
-<script>
     // Giao diện điều hướng
     const menuItems = document.querySelectorAll('.menu-item');
     const sections = document.querySelectorAll('.content');
