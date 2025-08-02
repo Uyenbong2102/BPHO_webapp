@@ -1,45 +1,59 @@
-// Hiển thị section theo menu
-function showSection(id) {
-  document.querySelectorAll('.section').forEach(section => {
-    section.classList.remove('active');
+// ======= MENU CLICK + ACTIVE =======
+const menuItems = document.querySelectorAll(".menu-item");
+const sections = document.querySelectorAll(".content-section");
+
+menuItems.forEach(item => {
+  item.addEventListener("click", () => {
+    // Active menu
+    menuItems.forEach(i => i.classList.remove("active"));
+    item.classList.add("active");
+
+    // Show section
+    const targetId = item.getAttribute("data-target");
+    sections.forEach(sec => {
+      sec.classList.remove("active");
+      if (sec.id === targetId) sec.classList.add("active");
+    });
   });
-  document.getElementById(id).classList.add('active');
-}
+});
 
-// Hiển thị nội dung Task được chọn
-function selectTask(taskNumber) {
-  showSection('task');
-  const taskTitle = document.getElementById('task-title');
-  const taskContent = document.getElementById('task-content');
+// ======= RENDER TASK CONTENT =======
+function renderTaskContent() {
+  const select = document.getElementById("taskSelect");
+  const value = select.value;
+  const container = document.getElementById("taskContent");
 
-  taskTitle.textContent = `🔹 Task ${taskNumber}`;
-  taskContent.innerHTML = `
-    <p>Nội dung mô tả cho Task ${taskNumber}. Bạn có thể thay đổi nội dung chi tiết sau.</p>
+  if (!value) {
+    container.innerHTML = "";
+    return;
+  }
+
+  container.innerHTML = `
+    <h3>Chi tiết ${value}</h3>
+    <p>Nội dung chi tiết cho ${value}. Bạn có thể chỉnh sửa nội dung sau.</p>
   `;
 }
 
-// ======================== DATA HOSTING DEMO ========================
-
-// Dữ liệu mẫu cho thống kê truy cập
-const sampleData = [
-  { time: "2025-08-01 08:30", views: 12 },
-  { time: "2025-08-01 10:00", views: 20 },
-  { time: "2025-08-02 09:15", views: 18 },
-  { time: "2025-08-02 13:45", views: 25 }
+// ======= DATA HOSTING DUMMY TABLE =======
+const dummyData = [
+  { time: "2025-08-01 08:00", views: 12 },
+  { time: "2025-08-01 10:30", views: 20 },
+  { time: "2025-08-02 14:15", views: 18 },
+  { time: "2025-08-03 09:45", views: 25 },
 ];
 
 function renderDataTable() {
   const tbody = document.querySelector("#data-table tbody");
   tbody.innerHTML = "";
 
-  sampleData.forEach(row => {
+  dummyData.forEach(row => {
     const tr = document.createElement("tr");
     tr.innerHTML = `<td>${row.time}</td><td>${row.views}</td>`;
     tbody.appendChild(tr);
   });
 }
 
-// Xuất Excel từ bảng HTML
+// ======= EXPORT TO CSV =======
 function exportToExcel() {
   const table = document.getElementById("data-table");
   let csv = "";
@@ -59,23 +73,20 @@ function exportToExcel() {
   a.click();
 }
 
-// ======================== SETTINGS ========================
-
+// ======= SETTINGS =======
 function changeTheme(value) {
-  document.body.classList.remove("light-theme", "dark-theme");
-  if (value === "dark") document.body.classList.add("dark-theme");
-  else document.body.classList.add("light-theme");
+  document.body.classList.remove("dark-theme", "light-theme");
+  document.body.classList.add(`${value}-theme`);
 }
 
 function changeFontSize(value) {
-  document.body.classList.remove("small-font", "large-font");
-  if (value === "small") document.body.classList.add("small-font");
-  else if (value === "large") document.body.classList.add("large-font");
-  // Mặc định là normal => không thêm class
+  document.body.classList.remove("small", "large");
+  if (value !== "normal") {
+    document.body.classList.add(value);
+  }
 }
 
-// ======================== INIT ========================
-
+// ======= INIT =======
 document.addEventListener("DOMContentLoaded", () => {
   renderDataTable();
 });

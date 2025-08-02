@@ -3,77 +3,79 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>BPHO Dashboard</title>
+  <title>BPHO Web App</title>
   <link rel="stylesheet" href="style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
 <body class="dark-theme">
 
-  <nav class="sidebar">
-    <h2 class="menu-title">📊 Menu</h2>
-    <ul>
-      <li onclick="showSection('intro')">Introduction</li>
-      <li>
-        Computational Challenge
-        <ul class="submenu">
-          <li onclick="selectTask(1)">Task 1</li>
-          <li onclick="selectTask(2)">Task 2</li>
-          <li onclick="selectTask(3)">Task 3</li>
-          <li onclick="selectTask(4)">Task 4</li>
-          <li onclick="selectTask(5)">Task 5</li>
-          <li onclick="selectTask(6)">Task 6</li>
-          <li onclick="selectTask(7)">Task 7</li>
-          <li onclick="selectTask(8)">Task 8</li>
-          <li onclick="selectTask(9)">Task 9</li>
-          <li onclick="selectTask(10)">Task 10</li>
+  <div class="app-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <h2 class="app-title">📊 BPHO App</h2>
+      <nav>
+        <ul>
+          <li class="menu-item active" data-target="intro">📘 Introduction</li>
+          <li class="menu-item" data-target="challenge">🧩 Computational Challenge</li>
+          <li class="menu-item" data-target="data">📈 Data Hosting</li>
+          <li class="menu-item" data-target="settings">⚙️ Settings</li>
         </ul>
-      </li>
-      <li onclick="showSection('data')">Data Hosting</li>
-      <li onclick="showSection('settings')">Settings</li>
-    </ul>
-  </nav>
+      </nav>
+    </aside>
 
-  <main class="content">
-    <section id="intro" class="section active">
-      <h1>📌 Introduction</h1>
-      <p>Giới thiệu về dự án của bạn sẽ được cập nhật tại đây...</p>
-    </section>
+    <!-- Main content -->
+    <main class="main-content">
+      <!-- INTRODUCTION -->
+      <section id="intro" class="content-section active">
+        <h1>📘 Introduction</h1>
+        <p>Giới thiệu ngắn gọn về dự án. Bạn có thể cập nhật nội dung tại đây.</p>
+      </section>
 
-    <section id="task" class="section">
-      <h1>🧩 Computational Challenge</h1>
-      <p id="task-title">Chọn một task từ menu bên trái.</p>
-      <div id="task-content"></div>
-    </section>
+      <!-- CHALLENGE -->
+      <section id="challenge" class="content-section">
+        <h1>🧩 Computational Challenge</h1>
+        <div class="task-selector">
+          <label for="taskSelect">Chọn Task:</label>
+          <select id="taskSelect" onchange="renderTaskContent()">
+            <option disabled selected>-- Chọn một task --</option>
+            ${[...Array(10)].map((_, i) => `<option value="task${i+1}">Task ${i+1}</option>`).join('')}
+          </select>
+        </div>
+        <div id="taskContent" class="card"></div>
+      </section>
 
-    <section id="data" class="section">
-      <h1>📈 Data Hosting</h1>
-      <table id="data-table">
-        <thead>
-          <tr><th>Thời gian</th><th>Lượt truy cập</th></tr>
-        </thead>
-        <tbody></tbody>
-      </table>
-      <button onclick="exportToExcel()">📥 Xuất Excel</button>
-    </section>
+      <!-- DATA HOSTING -->
+      <section id="data" class="content-section">
+        <h1>📈 Data Hosting</h1>
+        <table id="data-table">
+          <thead>
+            <tr><th>Thời gian</th><th>Lượt truy cập</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+        <button onclick="exportToExcel()">📥 Xuất Excel</button>
+      </section>
 
-    <section id="settings" class="section">
-      <h1>⚙️ Settings</h1>
-      <label>🎨 Màu nền:
-        <select onchange="changeTheme(this.value)">
-          <option value="dark">Tối (đen)</option>
-          <option value="light">Sáng</option>
-        </select>
-      </label><br/><br/>
-      <label>🔤 Cỡ chữ:
-        <select onchange="changeFontSize(this.value)">
-          <option value="small">Nhỏ</option>
-          <option value="normal" selected>Bình thường</option>
-          <option value="large">Lớn</option>
-        </select>
-      </label>
-    </section>
-  </main>
+      <!-- SETTINGS -->
+      <section id="settings" class="content-section">
+        <h1>⚙️ Cài đặt</h1>
+        <label>🎨 Giao diện:
+          <select onchange="changeTheme(this.value)">
+            <option value="dark">Tối</option>
+            <option value="light">Sáng</option>
+          </select>
+        </label><br /><br />
+        <label>🔤 Cỡ chữ:
+          <select onchange="changeFontSize(this.value)">
+            <option value="small">Nhỏ</option>
+            <option value="normal" selected>Bình thường</option>
+            <option value="large">Lớn</option>
+          </select>
+        </label>
+      </section>
+    </main>
+  </div>
 
   <script src="script.js"></script>
 </body>
