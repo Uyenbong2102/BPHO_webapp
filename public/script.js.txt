@@ -1,29 +1,81 @@
-document.addEventListener("DOMContentLoaded", function () {
-  const ctx = document.getElementById("myChart").getContext("2d");
-
-  const myChart = new Chart(ctx, {
-    type: "line",
-    data: {
-      labels: ["Thứ 2", "Thứ 3", "Thứ 4", "Thứ 5", "Thứ 6", "Thứ 7"],
-      datasets: [
-        {
-          label: "Người dùng truy cập",
-          data: [120, 150, 100, 180, 210, 160],
-          borderColor: "#1976d2",
-          backgroundColor: "rgba(25, 118, 210, 0.2)",
-          borderWidth: 2,
-          tension: 0.3,
-          fill: true
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      scales: {
-        y: {
-          beginAtZero: true
-        }
-      }
-    }
+// Hiển thị section theo menu
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(section => {
+    section.classList.remove('active');
   });
+  document.getElementById(id).classList.add('active');
+}
+
+// Hiển thị nội dung Task được chọn
+function selectTask(taskNumber) {
+  showSection('task');
+  const taskTitle = document.getElementById('task-title');
+  const taskContent = document.getElementById('task-content');
+
+  taskTitle.textContent = `🔹 Task ${taskNumber}`;
+  taskContent.innerHTML = `
+    <p>Nội dung mô tả cho Task ${taskNumber}. Bạn có thể thay đổi nội dung chi tiết sau.</p>
+  `;
+}
+
+// ======================== DATA HOSTING DEMO ========================
+
+// Dữ liệu mẫu cho thống kê truy cập
+const sampleData = [
+  { time: "2025-08-01 08:30", views: 12 },
+  { time: "2025-08-01 10:00", views: 20 },
+  { time: "2025-08-02 09:15", views: 18 },
+  { time: "2025-08-02 13:45", views: 25 }
+];
+
+function renderDataTable() {
+  const tbody = document.querySelector("#data-table tbody");
+  tbody.innerHTML = "";
+
+  sampleData.forEach(row => {
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${row.time}</td><td>${row.views}</td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+// Xuất Excel từ bảng HTML
+function exportToExcel() {
+  const table = document.getElementById("data-table");
+  let csv = "";
+  for (let row of table.rows) {
+    let rowData = [];
+    for (let cell of row.cells) {
+      rowData.push(cell.innerText);
+    }
+    csv += rowData.join(",") + "\n";
+  }
+
+  const blob = new Blob([csv], { type: "text/csv" });
+  const url = window.URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "data-hosting.csv";
+  a.click();
+}
+
+// ======================== SETTINGS ========================
+
+function changeTheme(value) {
+  document.body.classList.remove("light-theme", "dark-theme");
+  if (value === "dark") document.body.classList.add("dark-theme");
+  else document.body.classList.add("light-theme");
+}
+
+function changeFontSize(value) {
+  document.body.classList.remove("small-font", "large-font");
+  if (value === "small") document.body.classList.add("small-font");
+  else if (value === "large") document.body.classList.add("large-font");
+  // Mặc định là normal => không thêm class
+}
+
+// ======================== INIT ========================
+
+document.addEventListener("DOMContentLoaded", () => {
+  renderDataTable();
 });
