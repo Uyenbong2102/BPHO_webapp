@@ -42,6 +42,14 @@
         <p><strong>Total visits:</strong> 74</p>
         <p><strong>Last access:</strong> 2025-08-04 11:45</p>
 
+        <div style="margin: 20px 0;">
+          <label for="fromDate">From: </label>
+          <input type="date" id="fromDate" />
+          <label for="toDate">To: </label>
+          <input type="date" id="toDate" />
+          <button onclick="applyDateFilter()">Apply Filter</button>
+        </div>
+
         <canvas id="analyticsChart" width="600" height="300"></canvas>
 
         <table id="analyticsTable">

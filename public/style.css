@@ -22,7 +22,7 @@ body {
 }
 
 .sidebar h2 {
-  font-size: 24px;
+  font-size: 26px;
   margin-bottom: 30px;
   color: #ffffff;
   text-align: left;
@@ -37,13 +37,13 @@ body {
 .sidebar li {
   margin: 20px 0;
   font-size: 20px;
-  font-weight: 500;
+  font-weight: 600;
   cursor: pointer;
   color: #9ac8ff;
   display: flex;
   align-items: center;
   transition: all 0.3s ease;
-  padding: 8px 14px;
+  padding: 10px 16px;
   border-radius: 8px;
 }
 
@@ -106,13 +106,17 @@ button:hover {
   background-color: #3b3fc1;
 }
 
-select, input[type="number"] {
-  margin-top: 8px;
+select, input[type="number"], input[type="date"] {
+  margin: 8px 8px 8px 0;
   padding: 8px;
   border-radius: 5px;
   border: 1px solid #888;
   background-color: #1a1a1a;
   color: white;
+}
+
+.filter-group {
+  margin-top: 20px;
 }
 
 @keyframes fadeIn {

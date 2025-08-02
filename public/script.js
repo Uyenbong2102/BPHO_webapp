@@ -8,16 +8,13 @@ function showPage(pageId) {
     activePage.classList.remove("hidden");
     activePage.classList.add("active");
   }
-}
 
-// Sidebar tab effect
-const menuItems = document.querySelectorAll(".sidebar li");
-menuItems.forEach(item => {
-  item.addEventListener("click", () => {
-    menuItems.forEach(i => i.classList.remove("active-tab"));
-    item.classList.add("active-tab");
+  // Tab indicator
+  document.querySelectorAll(".sidebar li").forEach(li => li.classList.remove("active-tab"));
+  document.querySelectorAll(".sidebar li").forEach(li => {
+    if (li.textContent.toLowerCase().includes(pageId)) li.classList.add("active-tab");
   });
-});
+}
 
 // Tasks 1 to 10
 const taskSelect = document.getElementById("taskSelect");
@@ -33,7 +30,7 @@ taskSelect.addEventListener("change", () => {
   taskDetail.textContent = taskNumber ? `You are viewing detail of Task ${taskNumber}.` : "";
 });
 
-// Access Statistics
+// Data
 const accessData = [
   { time: "2025-08-01 10:00", views: 12 },
   { time: "2025-08-02 14:32", views: 20 },
@@ -41,21 +38,27 @@ const accessData = [
   { time: "2025-08-04 11:45", views: 25 }
 ];
 
-function renderAnalytics() {
+let chartInstance;
+
+function renderAnalytics(data = accessData) {
   const tbody = document.getElementById("analytics-body");
   tbody.innerHTML = "";
-  accessData.forEach(row => {
+  data.forEach(row => {
     tbody.innerHTML += `<tr><td>${row.time}</td><td>${row.views}</td></tr>`;
   });
 
+  document.getElementById("totalVisits").textContent = data.reduce((sum, d) => sum + d.views, 0);
+  document.getElementById("lastAccess").textContent = data.at(-1)?.time || "-";
+
   const ctx = document.getElementById("analyticsChart").getContext("2d");
-  new Chart(ctx, {
+  if (chartInstance) chartInstance.destroy();
+  chartInstance = new Chart(ctx, {
     type: "line",
     data: {
-      labels: accessData.map(d => d.time),
+      labels: data.map(d => d.time),
       datasets: [{
         label: "Views",
-        data: accessData.map(d => d.views),
+        data: data.map(d => d.views),
         borderColor: "#00c0ff",
         backgroundColor: "rgba(0,192,255,0.2)",
         fill: true,
@@ -69,13 +72,23 @@ function renderAnalytics() {
   });
 }
 
+function filterData() {
+  const start = document.getElementById("startDate").value;
+  const end = document.getElementById("endDate").value;
+
+  let filtered = accessData;
+  if (start) filtered = filtered.filter(d => d.time >= start);
+  if (end) filtered = filtered.filter(d => d.time <= end + "T23:59");
+
+  renderAnalytics(filtered);
+}
+
 document.getElementById("exportExcel").addEventListener("click", () => {
   const table = document.getElementById("analyticsTable");
   const wb = XLSX.utils.table_to_book(table, { sheet: "Access Stats" });
   XLSX.writeFile(wb, "access_stats.xlsx");
 });
 
-// Settings
 const darkModeToggle = document.getElementById("darkModeToggle");
 const fontSizeSelect = document.getElementById("fontSizeSelect");
 
@@ -88,6 +101,6 @@ fontSizeSelect.addEventListener("change", () => {
   document.body.style.fontSize = fontSizeSelect.value === "large" ? "18px" : "16px";
 });
 
-// Load
+// Init
 showPage("introduction");
 renderAnalytics();
