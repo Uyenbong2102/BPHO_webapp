@@ -4,66 +4,67 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>BPHO 2025</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-<body class="dark-theme">
-  <div class="container">
-    <nav class="sidebar">
-      <h2>BPHO 2025</h2>
-      <ul>
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <h1>BPHO 2025</h1>
+      <ul class="menu">
         <li class="menu-item active" data-target="intro">📘 Introduction</li>
-        <li class="menu-item" data-target="challenge">🧪 Challenges</li>
-        <li class="menu-item" data-target="data">📊 Analytics</li>
+        <li class="menu-item" data-target="challenges">🧪 Challenges</li>
+        <li class="menu-item" data-target="analytics">📊 Analytics</li>
         <li class="menu-item" data-target="settings">⚙️ Settings</li>
       </ul>
-    </nav>
-    <main class="main-content">
+    </aside>
+
+    <main class="main">
       <section id="intro" class="content active">
-        <h1>Introduction</h1>
-        <p>General project information will appear here.</p>
+        <h2>📘 Introduction</h2>
+        <p>Welcome to the BPHO 2025 project. Details will be updated soon.</p>
       </section>
-      <section id="challenge" class="content">
-        <h1>Challenges</h1>
+
+      <section id="challenges" class="content">
+        <h2>🧪 Computational Challenges</h2>
         <label for="taskSelect">Select a task:</label>
         <select id="taskSelect" onchange="showTask(this.value)">
-          <option disabled selected>-- Choose a Task --</option>
-          <option value="1">Task 1</option>
-          <option value="2">Task 2</option>
-          <option value="3">Task 3</option>
+          <option value="">-- Choose a Task --</option>
+          ${[...Array(10)].map((_, i) => `<option value="${i + 1}">Task ${i + 1}</option>`).join('')}
         </select>
-        <div id="taskDetail" class="card">Please select a task to view details.</div>
+        <div id="taskDetail" class="card"></div>
       </section>
-      <section id="data" class="content">
-        <h1>Access Statistics</h1>
+
+      <section id="analytics" class="content">
+        <h2>📊 Access Statistics</h2>
         <div class="stats">
-          <div class="card"><strong>Total:</strong> <span id="totalViews">-</span></div>
-          <div class="card"><strong>Last:</strong> <span id="lastAccess">-</span></div>
-          <div class="card"><strong>Peak:</strong> <span id="peakDay">-</span></div>
-          <div class="card"><strong>Average:</strong> <span id="averageViews">-</span></div>
+          <div>Total visits: <strong id="totalVisits">0</strong></div>
+          <div>Last access: <strong id="lastAccess">-</strong></div>
         </div>
-        <canvas id="visitChart" height="100"></canvas>
-        <button onclick="exportToExcel()">Export to Excel</button>
-        <table><thead><tr><th>Time</th><th>Views</th></tr></thead><tbody id="data-table"></tbody></table>
+        <canvas id="visitsChart" height="200"></canvas>
+        <table>
+          <thead><tr><th>Time</th><th>Views</th></tr></thead>
+          <tbody id="data-table"></tbody>
+        </table>
+        <button onclick="exportToExcel()">💾 Export to Excel</button>
       </section>
+
       <section id="settings" class="content">
-        <h1>Settings</h1>
-        <div class="setting-group">
-          <label>Dark Mode</label>
-          <input type="checkbox" checked onchange="setTheme(this.checked ? 'dark' : 'light')">
-        </div>
-        <div class="setting-group">
-          <label>Font Size</label>
+        <h2>⚙️ Settings</h2>
+        <label><input type="checkbox" id="darkToggle" onchange="setTheme()"> Dark Mode</label><br/>
+        <label>Font Size:
           <select onchange="setFont(this.value)">
             <option value="normal">Normal</option>
-            <option value="small">Small</option>
             <option value="large">Large</option>
+            <option value="xlarge">Extra Large</option>
           </select>
-        </div>
+        </label><br/>
+        <label><input type="checkbox" id="autoRefresh" checked /> Auto-refresh data</label><br/>
+        <label>Refresh interval (seconds): <input type="number" id="refreshInterval" value="30" min="5"/></label>
       </section>
     </main>
   </div>
   <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </body>
 </html>

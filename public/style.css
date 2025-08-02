@@ -1,71 +1,95 @@
 body {
   margin: 0;
   font-family: 'Roboto', sans-serif;
-  background: #111;
-  color: #f0f0f0;
-}
-.container {
   display: flex;
   height: 100vh;
+  background-color: #111;
+  color: #fff;
+  font-size: 16px;
 }
+
+.app {
+  display: flex;
+  width: 100%;
+}
+
 .sidebar {
-  width: 230px;
-  background: #222;
-  padding: 20px;
+  width: 220px;
+  background-color: #1d1b2a;
+  padding: 1rem;
 }
-.sidebar h2 {
-  text-align: center;
-  font-size: 20px;
+
+.sidebar h1 {
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
 }
-.sidebar ul {
+
+.menu {
   list-style: none;
   padding: 0;
 }
+
 .menu-item {
-  padding: 10px;
-  border-radius: 5px;
+  margin-bottom: 0.8rem;
   cursor: pointer;
+  padding: 0.5rem;
+  border-radius: 5px;
 }
-.menu-item:hover,
-.menu-item.active {
-  background: #444;
+
+.menu-item.active,
+.menu-item:hover {
+  background-color: #38354b;
 }
-.main-content {
-  flex: 1;
-  padding: 20px;
+
+.main {
+  flex-grow: 1;
+  padding: 1.5rem;
   overflow-y: auto;
+  background-color: #111;
 }
-.content { display: none; }
-.content.active { display: block; }
+
+.content {
+  display: none;
+}
+
+.content.active {
+  display: block;
+}
+
 .card {
-  background: #333;
-  padding: 15px;
-  border-radius: 6px;
-  margin-top: 15px;
-}
-.stats {
-  display: flex;
-  gap: 1rem;
-  margin: 1rem 0;
-  flex-wrap: wrap;
-}
-table {
-  width: 100%;
   margin-top: 1rem;
-  border-collapse: collapse;
+  background-color: #333;
+  padding: 1rem;
+  border-radius: 8px;
 }
-th, td {
-  padding: 10px;
-  border: 1px solid #444;
-}
+
 button {
-  margin-top: 1rem;
-  padding: 10px 16px;
-  background: #00aaff;
-  color: white;
+  padding: 0.5rem 1rem;
+  background-color: dodgerblue;
   border: none;
   border-radius: 4px;
+  color: white;
+  cursor: pointer;
 }
-.setting-group {
-  margin: 1rem 0;
+
+table {
+  margin-top: 1rem;
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table, th, td {
+  border: 1px solid #444;
+}
+
+th, td {
+  padding: 8px;
+  text-align: left;
+}
+
+select, input[type="number"] {
+  margin: 0.5rem 0;
+  padding: 0.4rem;
+  border-radius: 4px;
+  border: none;
 }
