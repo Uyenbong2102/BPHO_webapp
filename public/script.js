@@ -60,3 +60,8 @@ function setFont(size) {
   document.body.classList.remove('small', 'normal', 'large');
   document.body.classList.add(size);
 }
+
+function toggleDarkMode(toggle) {
+  document.body.classList.toggle('dark-theme', toggle.checked);
+  document.body.classList.toggle('light-theme', !toggle.checked);
+}
