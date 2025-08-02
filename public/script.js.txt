@@ -1,59 +1,53 @@
-// ======= MENU CLICK + ACTIVE =======
-const menuItems = document.querySelectorAll(".menu-item");
-const sections = document.querySelectorAll(".content-section");
+// Switch between sections
+const menuItems = document.querySelectorAll('.menu-item');
+const sections = document.querySelectorAll('.section');
 
 menuItems.forEach(item => {
-  item.addEventListener("click", () => {
-    // Active menu
-    menuItems.forEach(i => i.classList.remove("active"));
-    item.classList.add("active");
+  item.addEventListener('click', () => {
+    menuItems.forEach(i => i.classList.remove('active'));
+    item.classList.add('active');
 
-    // Show section
-    const targetId = item.getAttribute("data-target");
+    const target = item.getAttribute('data-target');
     sections.forEach(sec => {
-      sec.classList.remove("active");
-      if (sec.id === targetId) sec.classList.add("active");
+      sec.classList.remove('active');
+      if (sec.id === target) sec.classList.add('active');
     });
   });
 });
 
-// ======= RENDER TASK CONTENT =======
+// Render task content
 function renderTaskContent() {
-  const select = document.getElementById("taskSelect");
-  const value = select.value;
-  const container = document.getElementById("taskContent");
+  const select = document.getElementById('taskSelect');
+  const container = document.getElementById('taskContent');
+  const task = select.value;
 
-  if (!value) {
+  if (!task) {
     container.innerHTML = "";
     return;
   }
 
-  container.innerHTML = `
-    <h3>Chi tiết ${value}</h3>
-    <p>Nội dung chi tiết cho ${value}. Bạn có thể chỉnh sửa nội dung sau.</p>
-  `;
+  container.innerHTML = `<p>Bạn đang xem nội dung của <strong>${task}</strong>. Nội dung chi tiết sẽ được cập nhật sau.</p>`;
 }
 
-// ======= DATA HOSTING DUMMY TABLE =======
-const dummyData = [
-  { time: "2025-08-01 08:00", views: 12 },
-  { time: "2025-08-01 10:30", views: 20 },
-  { time: "2025-08-02 14:15", views: 18 },
-  { time: "2025-08-03 09:45", views: 25 },
+// Data table
+const data = [
+  { time: "2025-08-01 08:00", views: 10 },
+  { time: "2025-08-02 12:00", views: 18 },
+  { time: "2025-08-03 16:00", views: 25 }
 ];
 
 function renderDataTable() {
   const tbody = document.querySelector("#data-table tbody");
   tbody.innerHTML = "";
 
-  dummyData.forEach(row => {
+  data.forEach(row => {
     const tr = document.createElement("tr");
     tr.innerHTML = `<td>${row.time}</td><td>${row.views}</td>`;
     tbody.appendChild(tr);
   });
 }
 
-// ======= EXPORT TO CSV =======
+// Export to CSV
 function exportToExcel() {
   const table = document.getElementById("data-table");
   let csv = "";
@@ -73,10 +67,10 @@ function exportToExcel() {
   a.click();
 }
 
-// ======= SETTINGS =======
+// Theme & Font
 function changeTheme(value) {
-  document.body.classList.remove("dark-theme", "light-theme");
-  document.body.classList.add(`${value}-theme`);
+  document.body.classList.remove("light", "dark");
+  document.body.classList.add(value);
 }
 
 function changeFontSize(value) {
@@ -86,7 +80,7 @@ function changeFontSize(value) {
   }
 }
 
-// ======= INIT =======
+// Init
 document.addEventListener("DOMContentLoaded", () => {
   renderDataTable();
 });
