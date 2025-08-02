@@ -1,7 +1,8 @@
 body {
   margin: 0;
-  font-family: 'Inter', sans-serif;
-  font-size: 16px;
+  font-family: 'Roboto', sans-serif;
+  background: #111;
+  color: #f0f0f0;
 }
 .container {
   display: flex;
@@ -9,82 +10,62 @@ body {
 }
 .sidebar {
   width: 230px;
-  background: #1e1e2f;
-  color: white;
+  background: #222;
   padding: 20px;
 }
 .sidebar h2 {
   text-align: center;
-  font-size: 22px;
-  margin-bottom: 25px;
+  font-size: 20px;
 }
 .sidebar ul {
   list-style: none;
   padding: 0;
 }
-.sidebar li {
-  padding: 12px;
+.menu-item {
+  padding: 10px;
+  border-radius: 5px;
   cursor: pointer;
-  border-radius: 6px;
 }
-.sidebar li.active,
-.sidebar li:hover {
-  background: #3b3b5c;
+.menu-item:hover,
+.menu-item.active {
+  background: #444;
 }
 .main-content {
   flex: 1;
   padding: 20px;
   overflow-y: auto;
 }
-.content {
-  display: none;
-}
-.content.active {
-  display: block;
-}
+.content { display: none; }
+.content.active { display: block; }
 .card {
-  background: #444;
+  background: #333;
   padding: 15px;
-  border-radius: 5px;
-  color: white;
+  border-radius: 6px;
   margin-top: 15px;
 }
-.dark-theme {
-  background: #121212;
-  color: #f0f0f0;
-}
-.light-theme {
-  background: white;
-  color: black;
-}
-.small {
-  font-size: 13px;
-}
-.normal {
-  font-size: 16px;
-}
-.large {
-  font-size: 20px;
-}
-button {
-  margin-top: 12px;
-  padding: 8px 14px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-select {
-  padding: 6px 10px;
-  margin-left: 10px;
-  border-radius: 5px;
+.stats {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+  flex-wrap: wrap;
 }
 table {
-  border-collapse: collapse;
   width: 100%;
-  margin-top: 15px;
+  margin-top: 1rem;
+  border-collapse: collapse;
 }
-table, th, td {
-  border: 1px solid gray;
-  padding: 8px;
-  text-align: center;
+th, td {
+  padding: 10px;
+  border: 1px solid #444;
+}
+button {
+  margin-top: 1rem;
+  padding: 10px 16px;
+  background: #00aaff;
+  color: white;
+  border: none;
+  border-radius: 4px;
+}
+.setting-group {
+  margin: 1rem 0;
 }

@@ -1,48 +1,34 @@
-// Giao diện điều hướng
 const menuItems = document.querySelectorAll('.menu-item');
 const sections = document.querySelectorAll('.content');
-
 menuItems.forEach(item => {
   item.addEventListener('click', () => {
     menuItems.forEach(i => i.classList.remove('active'));
     item.classList.add('active');
     const target = item.dataset.target;
-    sections.forEach(sec => {
-      sec.classList.remove('active');
-      if (sec.id === target) sec.classList.add('active');
+    sections.forEach(s => {
+      s.classList.remove('active');
+      if (s.id === target) s.classList.add('active');
     });
   });
 });
 
-// Hiển thị chi tiết Task
 function showTask(id) {
-  const detail = document.getElementById('taskDetail');
-  detail.innerHTML = `<div class='card'>Bạn đang xem chi tiết của <strong>Task ${id}</strong>. Nội dung sẽ cập nhật sau.</div>`;
+  document.getElementById('taskDetail').innerHTML =
+    `<div class='card'>You are viewing details for <strong>Task ${id}</strong>.</div>`;
 }
 
-// Xuất bảng thành CSV
-function exportToExcel() {
-  const rows = document.querySelectorAll('table tr');
-  let csv = '';
-  rows.forEach(row => {
-    const cols = row.querySelectorAll('td, th');
-    const line = Array.from(cols).map(cell => cell.innerText).join(',');
-    csv += line + '\n';
-  });
-
-  const blob = new Blob([csv], { type: 'text/csv' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = 'data.csv';
-  a.click();
-}
-
-// Dữ liệu giả lập cho bảng
 const data = [
   { time: '2025-08-01 10:00', views: 12 },
   { time: '2025-08-02 14:32', views: 20 },
   { time: '2025-08-03 09:15', views: 17 }
 ];
+
+const total = data.reduce((sum, d) => sum + d.views, 0);
+document.getElementById('totalViews').textContent = total;
+document.getElementById('lastAccess').textContent = data[data.length - 1].time;
+const peak = data.reduce((max, d) => d.views > max.views ? d : max, data[0]);
+document.getElementById('peakDay').textContent = `${peak.time} (${peak.views})`;
+document.getElementById('averageViews').textContent = (total / data.length).toFixed(1);
 
 const tbody = document.getElementById('data-table');
 data.forEach(d => {
@@ -51,17 +37,37 @@ data.forEach(d => {
   tbody.appendChild(row);
 });
 
-// Đổi giao diện và font
+function exportToExcel() {
+  let csv = 'Time,Views\n';
+  data.forEach(d => csv += `${d.time},${d.views}\n`);
+  const blob = new Blob([csv], { type: 'text/csv' });
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'analytics.csv';
+  a.click();
+}
+
 function setTheme(theme) {
   document.body.classList.remove('dark-theme', 'light-theme');
-  document.body.classList.add(`${theme}-theme`);
+  document.body.classList.add(theme + '-theme');
 }
 function setFont(size) {
   document.body.classList.remove('small', 'normal', 'large');
   document.body.classList.add(size);
 }
 
-function toggleDarkMode(toggle) {
-  document.body.classList.toggle('dark-theme', toggle.checked);
-  document.body.classList.toggle('light-theme', !toggle.checked);
-}
+new Chart(document.getElementById('visitChart'), {
+  type: 'bar',
+  data: {
+    labels: data.map(d => d.time),
+    datasets: [{
+      label: 'Views',
+      data: data.map(d => d.views),
+      backgroundColor: '#4fc3f7'
+    }]
+  },
+  options: {
+    plugins: { legend: { display: false } },
+    scales: { y: { beginAtZero: true } }
+  }
+});
