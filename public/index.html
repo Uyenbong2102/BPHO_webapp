@@ -4,23 +4,30 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>BPHO 2025</title>
-  <link rel="stylesheet" href="style.css" />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link href="style.css" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
 </head>
 <body>
-  <div id="app">
-    <aside>
+  <div class="container">
+    <aside class="sidebar">
       <h2>BPHO 2025</h2>
       <nav>
-        <button onclick="changeTab('intro')">📘 Introduction</button>
-        <button onclick="changeTab('challenges')">🧪 Challenges</button>
-        <button onclick="changeTab('analytics')">📊 Analytics</button>
-        <button onclick="changeTab('settings')">⚙️ Settings</button>
+        <ul>
+          <li onclick="navigate('intro')">📘 Introduction</li>
+          <li onclick="navigate('challenges')">🧪 Challenges</li>
+          <li onclick="navigate('analytics')">📊 Analytics</li>
+          <li onclick="navigate('settings')">⚙️ Settings</li>
+        </ul>
       </nav>
     </aside>
-    <main id="content"></main>
+
+    <main id="main-content">
+      <!-- Dynamic content will be injected here -->
+    </main>
   </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
   <script src="script.js"></script>
 </body>
 </html>

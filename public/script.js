@@ -1,126 +1,129 @@
-const tabs = {
-  intro: "<h1>Welcome to BPHO 2025</h1><p>This is the introduction.</p>",
-  challenges: generateChallengeContent(),
-  analytics: generateAnalyticsContent(),
-  settings: generateSettingsContent()
+let settings = {
+  darkMode: true,
+  fontSize: "normal",
+  autoRefresh: false,
+  refreshInterval: 30
 };
 
-function changeTab(tabName) {
-  const content = document.getElementById("content");
-  content.innerHTML = tabs[tabName] || "<p>Content not found.</p>";
-  if (tabName === 'analytics') drawChart();
-  if (tabName === 'challenges') setupChallenges();
-}
+let visitData = [
+  { time: "2025-08-01 10:00", views: 12 },
+  { time: "2025-08-02 14:32", views: 20 },
+  { time: "2025-08-03 09:15", views: 17 }
+];
 
-function generateChallengeContent() {
-  let options = '<option value="">-- Choose a Task --</option>';
-  for (let i = 1; i <= 10; i++) {
-    options += `<option value="task${i}">Task ${i}</option>`;
+function navigate(section) {
+  const main = document.getElementById("main-content");
+  main.innerHTML = "";
+
+  if (section === "intro") {
+    main.innerHTML = `<h2>Welcome</h2><p>This is the introduction to BPHO 2025.</p>`;
   }
-  return `
-    <section>
+
+  if (section === "challenges") {
+    const taskSection = document.createElement("div");
+    taskSection.innerHTML = `
       <h2>Computational Challenges</h2>
-      <label for="taskSelect">Select a task:</label>
-      <select id="taskSelect" onchange="viewTaskDetail(this.value)">${options}</select>
-      <p id="taskDetail"></p>
-    </section>
-  `;
-}
+      <label>Select a task: </label>
+      <select id="task-select">
+        <option>-- Choose a Task --</option>
+        ${Array.from({ length: 10 }, (_, i) => `<option value="Task ${i + 1}">Task ${i + 1}</option>`).join("")}
+      </select>
+      <p id="task-detail"></p>
+    `;
+    main.appendChild(taskSection);
 
-function viewTaskDetail(taskId) {
-  document.getElementById("taskDetail").innerText = taskId ? \`You selected \${taskId}.\` : "";
-}
+    document.getElementById("task-select").addEventListener("change", function () {
+      const selected = this.value;
+      document.getElementById("task-detail").innerHTML = selected !== "-- Choose a Task --"
+        ? `You are viewing detail of <strong>${selected}</strong>.`
+        : "";
+    });
+  }
 
-function generateAnalyticsContent() {
-  return \`
-    <section>
+  if (section === "analytics") {
+    const analytics = document.createElement("div");
+    analytics.innerHTML = `
       <h2>Access Statistics</h2>
-      <div class="summary-boxes">
-        <div>Total: <span id="totalVisits">0</span></div>
-        <div>Last: <span id="lastAccess">-</span></div>
-        <div>Peak: <span id="peakTime">-</span></div>
-        <div>Average: <span id="averageViews">0</span></div>
-      </div>
-      <div>
-        <label>Filter by date range (not functional in demo)</label>
-        <input type="date"> to <input type="date">
-      </div>
-      <div class="chart-container">
-        <canvas id="visitChart"></canvas>
-      </div>
-      <table>
+      <label>From: <input type="date" id="from-date"></label>
+      <label>To: <input type="date" id="to-date"></label>
+      <button onclick="renderAnalytics()">Filter</button>
+      <div class="chart-container"><canvas id="visitChart"></canvas></div>
+      <button onclick="exportToExcel()">Export to Excel</button>
+      <table border="1" style="margin-top: 1rem; width: 100%; text-align: left;">
         <thead><tr><th>Time</th><th>Views</th></tr></thead>
-        <tbody id="visitTable"></tbody>
+        <tbody id="analytics-table-body"></tbody>
       </table>
-      <button class="btn" onclick="exportToExcel()">Export to Excel</button>
-    </section>
-  \`;
-}
+    `;
+    main.appendChild(analytics);
+    renderAnalytics();
+  }
 
-function generateSettingsContent() {
-  return \`
-    <section>
+  if (section === "settings") {
+    const settingsHTML = `
       <h2>Settings</h2>
-      <label><input type="checkbox" id="darkMode" onchange="toggleDarkMode()"> Dark Mode</label>
-      <label for="fontSize">Font Size:
-        <select id="fontSize" onchange="changeFontSize(this.value)">
-          <option value="normal">Normal</option>
-          <option value="large">Large</option>
+      <label><input type="checkbox" id="darkMode" ${settings.darkMode ? "checked" : ""}/> Dark Mode</label><br/>
+      <label>Font Size:
+        <select id="fontSize">
+          <option value="normal" ${settings.fontSize === "normal" ? "selected" : ""}>Normal</option>
+          <option value="large" ${settings.fontSize === "large" ? "selected" : ""}>Large</option>
         </select>
+      </label><br/>
+      <label><input type="checkbox" id="autoRefresh" ${settings.autoRefresh ? "checked" : ""}/> Auto-refresh data</label><br/>
+      <label>Refresh interval (seconds):
+        <input type="number" id="refreshInterval" value="${settings.refreshInterval}" min="1" />
       </label>
-      <label><input type="checkbox" id="autoRefresh" onchange="toggleAutoRefresh()"> Auto-refresh data</label>
-      <label for="interval">Refresh interval (seconds):
-        <input type="number" id="interval" value="30" min="5" />
-      </label>
-    </section>
-  \`;
+    `;
+    main.innerHTML = settingsHTML;
+
+    // Bind settings
+    document.getElementById("darkMode").addEventListener("change", e => {
+      document.body.style.backgroundColor = e.target.checked ? "#111" : "#fff";
+    });
+  }
 }
 
-function drawChart() {
-  const ctx = document.getElementById('visitChart').getContext('2d');
-  const data = {
-    labels: ['2025-08-01 10:00', '2025-08-02 14:32', '2025-08-03 09:15'],
-    datasets: [{
-      label: 'Views',
-      data: [12, 20, 17],
-      backgroundColor: '#00bfff'
-    }]
-  };
-  new Chart(ctx, {
-    type: 'bar',
-    data,
-    options: { responsive: true, scales: { y: { beginAtZero: true } } }
+function renderAnalytics() {
+  const from = document.getElementById("from-date").value;
+  const to = document.getElementById("to-date").value;
+  const filtered = visitData.filter(d => {
+    const date = d.time.slice(0, 10);
+    return (!from || date >= from) && (!to || date <= to);
   });
 
-  // Populate summary
-  document.getElementById("totalVisits").innerText = 49;
-  document.getElementById("lastAccess").innerText = "2025-08-03 09:15";
-  document.getElementById("peakTime").innerText = "2025-08-02 14:32 (20)";
-  document.getElementById("averageViews").innerText = "16.3";
+  const ctx = document.getElementById("visitChart").getContext("2d");
+  if (window.visitChart) window.visitChart.destroy();
 
-  const tbody = document.getElementById("visitTable");
-  tbody.innerHTML = data.labels.map((label, i) => \`<tr><td>\${label}</td><td>\${data.datasets[0].data[i]}</td></tr>\`).join("");
+  window.visitChart = new Chart(ctx, {
+    type: "bar",
+    data: {
+      labels: filtered.map(d => d.time),
+      datasets: [{
+        label: "Views",
+        data: filtered.map(d => d.views),
+        backgroundColor: "#00aaff"
+      }]
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { display: false }
+      },
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+
+  const tbody = document.getElementById("analytics-table-body");
+  tbody.innerHTML = filtered.map(d => `<tr><td>${d.time}</td><td>${d.views}</td></tr>`).join("");
 }
 
 function exportToExcel() {
-  alert("Exporting to Excel... (Demo only)");
+  const ws = XLSX.utils.json_to_sheet(visitData);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, "Analytics");
+  XLSX.writeFile(wb, "analytics.xlsx");
 }
 
-function toggleDarkMode() {
-  document.body.style.backgroundColor = document.getElementById('darkMode').checked ? '#121212' : '#ffffff';
-}
-
-function changeFontSize(size) {
-  document.body.style.fontSize = size === 'large' ? '18px' : '14px';
-}
-
-function toggleAutoRefresh() {
-  const isEnabled = document.getElementById('autoRefresh').checked;
-  alert("Auto-refresh " + (isEnabled ? "enabled" : "disabled") + " (Demo)");
-}
-
-function setupChallenges() {
-  document.getElementById('taskDetail').innerText = '';
-}
-
-changeTab('intro');
+// Load Introduction on first load
+navigate("intro");
