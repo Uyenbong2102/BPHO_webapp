@@ -10,6 +10,15 @@ function showPage(pageId) {
   }
 }
 
+// Sidebar tab effect
+const menuItems = document.querySelectorAll(".sidebar li");
+menuItems.forEach(item => {
+  item.addEventListener("click", () => {
+    menuItems.forEach(i => i.classList.remove("active-tab"));
+    item.classList.add("active-tab");
+  });
+});
+
 // Tasks 1 to 10
 const taskSelect = document.getElementById("taskSelect");
 const taskDetail = document.getElementById("taskDetail");
@@ -79,6 +88,6 @@ fontSizeSelect.addEventListener("change", () => {
   document.body.style.fontSize = fontSizeSelect.value === "large" ? "18px" : "16px";
 });
 
-// Load default page
+// Load
 showPage("introduction");
 renderAnalytics();
